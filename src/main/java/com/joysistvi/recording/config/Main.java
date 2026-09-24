@@ -7,6 +7,6 @@ public class Main {
         DBConnection db = new DBConnection();
         ArtistDAO ad = new ArtistDAO(db);
 
-        ad.readAllArtist();
+        ad.readAllArtists();
     }
 }
