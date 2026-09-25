@@ -1,5 +1,6 @@
 package com.joysistvi.recording.cliview;
 
+import com.joysistvi.recording.Utility.InputUtility;
 import com.joysistvi.recording.controller.ArtistController;
 import com.joysistvi.recording.model.Artist;
 
@@ -29,6 +30,10 @@ public class ArtistView {
                 case 2 -> searchArtist();
                 case 3 -> addArtists();
                 case 4 -> updateArtist();
+                case 5 -> archiveArtist();
+                case 6 -> restoreArtist();
+                case 7 -> deleteArtist();
+                case 8 -> viewAllArchivedArtists();
 
                 case 0 -> System.out.println("Returning to main menu...");
                 default -> System.out.println("Invalid choice. Try again.");
@@ -57,18 +62,7 @@ public class ArtistView {
 
     public int promptChoice() {
         System.out.print("Choice: ");
-        return readInt();
-    }
-
-    private int readInt() {
-        while (true) {
-            String input = scanner.nextLine();
-            try {
-                return Integer.parseInt(input.trim());
-            } catch (RuntimeException e) {
-                System.out.print("Please enter a valid number: ");
-            }
-        }
+        return InputUtility.readInt(scanner);
     }
 
     private void viewAllArtists() {
@@ -108,7 +102,7 @@ public class ArtistView {
         viewAllArtists();
 
         System.out.print("Arists ID to update: ");
-        int id = readInt();
+        int id = InputUtility.readInt(scanner);
 
         Artist current = artistController.handleGetArtistById(id);
 
@@ -117,7 +111,7 @@ public class ArtistView {
             return;
         }
 
-        System.out.println("New Name [ " + current.getName() + "] (press Enter to keep the current): ");
+        System.out.println("New Name [ " + current.getName() + " ] (press Enter to keep the current): ");
         String name = scanner.nextLine();
         if (name.trim().isEmpty()) {
             name = current.getName();
@@ -125,13 +119,70 @@ public class ArtistView {
 
         Artist artist = new Artist(id, name);
 
-        boolean isSuccess = artistController.handleCreateArtist(artist);
+        boolean isSuccess = artistController.handleUpdateArtist(artist);
         System.out.println(isSuccess ? "Artist updated successfully." : "Failed to update artist.");
 
         if (isSuccess) {
             System.out.println();
             viewAllArtists(); // read-after-write / refresh-after-mutation
         }
+    }
+
+    private void archiveArtist() {
+        System.out.println("\n----- Archive Artist -----");
+
+        viewAllArtists();
+
+        System.out.print("Artist ID to archive: ");
+        int id = InputUtility.readInt(scanner);
+
+        boolean isSuccess = artistController.handleArchiveArtist(id);
+        System.out.println(isSuccess ? "Artist archived successfully." : "Failed to archive artist.");
+
+        if (isSuccess) {
+            System.out.println();
+            viewAllArtists();
+        }
+    }
+
+    private void restoreArtist() {
+        System.out.println("\n----- Restore Artist -----");
+
+        viewAllArchivedArtists();
+
+        System.out.print("Artist ID to restore: ");
+        int id = InputUtility.readInt(scanner);
+
+        boolean isSuccess = artistController.handleRestoreArtist(id);
+        System.out.println(isSuccess ? "Artist restored successfully." : "Failed to restore artist.");
+
+        if (isSuccess) {
+            System.out.println();
+            viewAllArchivedArtists();
+        }
+    }
+
+    private void deleteArtist() {
+        System.out.println("\n----- Delete Artist -----");
+
+        viewAllArchivedArtists();
+
+        System.out.print("Artist ID to delete: ");
+        int id = InputUtility.readInt(scanner);
+
+        boolean isSuccess = artistController.handleDeleteArtist(id);
+        System.out.println(isSuccess ? "Artist deleted successfully." : "Failed to delete artist.");
+
+        if (isSuccess) {
+            System.out.println();
+            viewAllArchivedArtists();
+        }
+    }
+
+    private void viewAllArchivedArtists() {
+        System.out.println("\n----- View All Archived Artists -----");
+        List<Artist> artists = artistController.handleViewArchivedArtists();
+        printArtists(artists);
     }
 
 

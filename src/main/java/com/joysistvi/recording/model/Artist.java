@@ -3,6 +3,7 @@ package com.joysistvi.recording.model;
 public class Artist {
     private int id;
     private String name;
+    private boolean is_archieved;
 
     public Artist(String name) {
         this.name = name;
@@ -11,6 +12,7 @@ public class Artist {
     public Artist(int id, String name) {
         this.id = id;
         this.name = name;
+
     }
 
     public String getName() {

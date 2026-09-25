@@ -38,7 +38,7 @@ public class ArtistServiceImpl implements ArtistService {
 
         if (keyword == null || keyword.trim().isEmpty()) {
             System.out.println("Search keyword cannot be empty.");
-            return List.of(); // Empty list instead of null
+            return List.of();
         }
 
         return artistRepo.searchArtist(keyword.trim());
