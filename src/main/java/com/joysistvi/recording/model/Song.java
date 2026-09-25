@@ -6,6 +6,16 @@ public class Song {
     private int length;
     private String genre;
     private int albumId;
+    private String albumName;
+    private String artistName;
+    private boolean isArchived;
+
+    public Song(String title, int length, String genre, int albumId) {
+        this.title = title;
+        this.length = length;
+        this.genre = genre;
+        this.albumId = albumId;
+    }
 
     public Song(int id, String title, int length, String genre, int albumId) {
         this.id = id;
@@ -53,5 +63,29 @@ public class Song {
 
     public void setAlbumId(int albumId) {
         this.albumId = albumId;
+    }
+
+    public String getAlbumName() {
+        return albumName;
+    }
+
+    public void setAlbumName(String albumName) {
+        this.albumName = albumName;
+    }
+
+    public String getArtistName() {
+        return artistName;
+    }
+
+    public void setArtistName(String artistName) {
+        this.artistName = artistName;
+    }
+
+    public boolean isArchived() {
+        return isArchived;
+    }
+
+    public void setArchived(boolean archived) {
+        isArchived = archived;
     }
 }
